@@ -1,0 +1,48 @@
+<div class="controls">
+  <div class="centre">
+    <h1>Castles</h1>
+    <p>Data retrieved from WikiDate</p>
+    <input type="text" [(ngModel)]="search" (ngModelChange)="searchCastles()" class="searchbar"> 
+    <button *ngIf="search.trim().length > 0" (click)="clear()">
+      <span class="material-symbols-outlined">
+        close
+        </span>
+    </button>
+
+  </div>
+
+  <br>
+
+  <label>
+    Exclude castles with image: <input type="checkbox" [(ngModel)]="excludeImageCastles"
+      (click)="toggleExcludeImageCastles()">
+  </label> <br>
+
+  <label for="searchOn">Search On: </label>
+  <select name="searchOn" id="searchOn" [(ngModel)]="searchOn" (ngModelChange)="searchCastles()"> 
+    <option value="name" selected="selected">Name</option>
+    <option value="location">Location</option>
+  </select>
+  <br>
+
+</div>
+
+<div class="container">
+  <div class="card-grid">
+    <div  *ngFor="let castle of items">
+      <div class="card">
+        <h1>{{ castle.name }}</h1>
+
+        <img src="{{castle.image}}"
+          *ngIf="castle.image && !(excludeImageCastles && castle.image == 'https://openclipart.org/image/800px/231040')"
+          alt="{{castle.name}}">
+        <p><span style="font-weight:bold;">Location:</span> {{ castle.location }}</p>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <mat-paginator [length]="castles.length" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50, 100]"
+      [pageIndex]="page" [showFirstLastButtons]="true" (page)="handlePageEvent($event)">
+    </mat-paginator>
